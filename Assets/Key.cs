@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class Key : MonoBehaviour
 {
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            GameManager.hasKey = true;
-            Destroy(gameObject); // Remove the key
+            PlayerInventory inventory = other.GetComponent<PlayerInventory>();
+            if (inventory != null)
+            {
+                inventory.CollectKey();
+                Destroy(gameObject); // remove key from scene
+            }
         }
     }
 }
