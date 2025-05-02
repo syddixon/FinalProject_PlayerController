@@ -7,10 +7,8 @@ public class Enemy : MonoBehaviour
 {
     [SerializeField] Transform player;
     public float moveSpeed = 3f;
-    public float stunTime = 3f;
-
     private Animator anim;
-    private bool isStunned = false;
+    [SerializeField] GameObject weapon;
 
     void Start()
     {
@@ -19,43 +17,20 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (isStunned || player == null) return;
-
         // Face and move toward the player
         transform.LookAt(player);
-        anim.SetTrigger("EnemyWalk");
+        anim.Play("EnemyWalk");
+
+       
     }
 
-    public void Stun()
+    private void OnTriggerEnter(Collider other)
     {
-        if (!isStunned)
-        {
-            StartCoroutine(StunRoutine());
-        }
+        //if (other.CompareTag("Weapon"))
+        //{
+        //    anim.SetTrigger("Fall");
+        //   // Destroy(gameObject);
+        //}
     }
 
-    private IEnumerator StunRoutine()
-    {
-        isStunned = true;
-
-        // Play stunned animation
-        if (anim != null) anim.SetTrigger("Fall");
-
-        // Wait
-        yield return new WaitForSeconds(stunTime);
-
-        // Play recovery animation
-        if (anim != null) anim.SetTrigger("GetUp");
-
-        isStunned = false;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        // You can tag your weapon as "Weapon" to make this more specific
-        if (other.CompareTag("Weapon"))
-        {
-            Stun();
-        }
-    }
 }

@@ -9,6 +9,7 @@ TagManager:
   - Door
   - RescueTarget
   - LockedDoor
+  - Weapon
   layers:
   - Default
   - TransparentFX
